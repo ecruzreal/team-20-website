@@ -1,25 +1,132 @@
+*{
+    box-sizing: border-box;
+}
+
 html,
 body{
     height: 100%;
     padding: 0;
     margin: 0;
-}
-
-body{
-
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 main{
     min-height: 100%;
 }
 
+:root{
+    --color-main: #76d487;
+    --color-hover: rgb(49, 165, 58);
+    --background-alternate: #f9fafb;
+}
+
 /* HEADER */
 
 header{
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+header .container{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+.nav-buttons{
+    display: flex;
+    gap: 16px;
+}
+
+.nav-buttons a{
+    text-decoration: none;
+    color: black;
+    background-color: var(--color-main);
+    border-radius: 12px;
+    padding: .5rem;
+    color: white;
+}
+
+.nav-buttons a:hover{
+    background-color: var(--color-hover);
+}
+/* Hero */
+
+.hero{
+    background: linear-gradient(135deg, #76d487 0%, #41b596 100%);
+    color: white;
+    padding: 8rem 2rem 6rem;
+    margin-top: 70px;
+    text-align: center;
+}
+
 /* Body */
 
+.container{
+    max-width: 1200px;
+    text-align: center;
+}
+
+.section{
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.features{
+    background-color: var(--background-alternate);
+}
+
+.features-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card{
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* Team */
+.team-header{
+    padding: 8rem 2rem 6rem;
+    margin-top: 50px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.card{
+    padding: 2rem;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+
+}
+
+.card img{
+    height: 12rem;
+}
+
+.tea {
+    background: var(--background-alternate);
+}
