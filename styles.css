@@ -116,17 +116,75 @@ header .container{
 }
 
 .card{
-    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
     background-color: white;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-
-
 }
 
 .card img{
     height: 12rem;
+    width: auto;
 }
 
-.tea {
+.team {
     background: var(--background-alternate);
+    padding: 2rem;
+}
+
+.meet-team{
+    width: 100%;
+}
+
+.research-header{
+    margin-top: 8rem;
+    padding: 2rem;
+}
+
+.interact-header{
+    margin-top: 8rem;
+    padding: 2rem;
+}
+
+/* Footer */
+
+footer{
+    text-align: center;
+    padding: 2rem;
+}
+
+@media (max-width: 650px){
+    header{
+        position: relative;
+    }
+
+    .nav-buttons a{
+        padding: .3rem;
+        font-size: 1rem;
+        background-color: transparent;
+        color: var(--color-main);
+    }
+
+    header .container{
+        padding: 4rem 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hero{
+        margin-top: 0px;
+    }
+
+    .team-header{
+        margin-top: 0px;
+    }
+
+    .research-header{
+        margin-top: 0px;
+    }
+
+    .interact-header{
+        margin-top: 0px;
+    }
 }
