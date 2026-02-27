@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healthy Wallet — Interactive Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="prototype.css">
+</head>
+<body>
+
+<div style="text-align:center">
+  <div class="page-title" style="text-shadow: 1px 1px 4px rgb(211, 254, 190); color: #76d487; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; font-weight: bold;">Healthy Wallet</div>
+  <div class="page-sub">Interactive Prototype · 6 Screens · Team 20</div>
+  <div class="back-home" style="margin-bottom: 2rem; padding: 1rem;; background-color: var(--bg-card); border-radius: 20px;"><a href="index.html" style="text-decoration: none; color: white;">Return to Info Site</a></div>
+</div>
+
+<div class="phone">
+  <div class="status-bar">
+    <span>9:41</span>
+    <div class="status-icons"><span><img src="images/signal-svgrepo-com.svg" height="15rem" alt=""></span><span><img src="images/battery-empty-svgrepo-com.svg" height="15rem" alt=""></span><span style="font-size:10px;color:var(--green-bright)">70%</span></div>
+  </div>
+
+  <div class="screen">
+
+    <!-- HOME -->
+    <div class="page active" id="page-home">
+      <div class="home-header">
+        <div class="home-header-left">
+          <div class="avatar">A</div>
+          <div><div class="hello-text">Hello Amy,</div><div class="hello-name">Welcome Back!</div></div>
+        </div>
+        <div class="menu-btn">⋮</div>
+      </div>
+      <div class="cost-card">
+        <div class="cost-label">Your Projected</div>
+        <div class="cost-title">Annual Healthcare Cost</div>
+        <div class="cost-amount"><sup>$</sup>3,600<sub>.00</sub></div>
+        <div class="cost-note">ⓘ Based on your age, insurance, and expected visits</div>
+      </div>
+      <div class="section-title">Your Monthly Budget Progress</div>
+      <div class="progress-track"><div class="progress-fill" style="width:50%"></div></div>
+      <div class="progress-label">$1,800 of $3,600 Saved</div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-card-label">This Month's Spendings</div>
+          <div class="stat-card-val">$543<sub>.67</sub></div>
+          <div class="stat-card-ytd">YTD Expenses <span>$1200.00</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">This Month's Savings</div>
+          <div class="stat-card-val">$698<sub>.00</sub></div>
+          <div class="stat-card-ytd">YTD Savings <span>$1800.00</span></div>
+        </div>
+      </div>
+      <div class="section-title">Upcoming Visits and Estimates</div>
+      <div id="home-visits"></div>
+    </div>
+
+    <!-- VISITS -->
+    <div class="page" id="page-upcoming">
+      <div class="page-header">Here's your <span>Upcoming<br>Visits</span></div>
+      <div id="all-visits"></div>
+      <button class="action-btn" onclick="openModal('visit-modal')">+ Schedule Appointment</button>
+    </div>
+
+    <!-- PRESCRIPTIONS -->
+    <div class="page" id="page-rx">
+      <div class="page-header">Your <span>Prescriptions</span></div>
+      <div id="rx-list"></div>
+      <button class="action-btn" onclick="openModal('rx-modal')">+ Add Prescription</button>
+    </div>
+
+    <!-- FORUMS -->
+    <div class="page" id="page-forums">
+      <div class="page-header">Community <span>Forums</span></div>
+      <div class="forum-tabs">
+        <div class="forum-tab active" data-cat="All" onclick="filterForum(this)">All</div>
+        <div class="forum-tab" data-cat="Insurance Tips" onclick="filterForum(this)">Insurance Tips</div>
+        <div class="forum-tab" data-cat="Chronic Care" onclick="filterForum(this)">Chronic Care</div>
+        <div class="forum-tab" data-cat="Dental" onclick="filterForum(this)">Dental</div>
+        <div class="forum-tab" data-cat="Mental Health" onclick="filterForum(this)">Mental Health</div>
+      </div>
+      <div id="forum-posts"></div>
+      <button class="action-btn" onclick="openModal('post-modal')">+ New Post</button>
+    </div>
+
+    <!-- AI CHAT -->
+    <div class="page" id="page-chat">
+      <div class="chat-header">
+        <div class="ai-avatar">🩺</div>
+        <div>
+          <div class="ai-name">HealthAI Assistant</div>
+          <div class="ai-status">Online · Always available</div>
+        </div>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="msg ai"><div class="msg-avatar" style="background:linear-gradient(135deg,#4eff7a,#0f5a25)">🩺</div><div><div class="msg-time">9:41 AM</div><div class="msg-bubble">Hi Amy! 👋 I'm your HealthAI assistant. I can help you understand your benefits, estimate costs, or explain your upcoming procedures. What's on your mind?</div></div></div>
+        <div class="msg user"><div class="msg-avatar" style="background:linear-gradient(135deg,#2bc954,#0a4a20);color:#e8f5ec;font-weight:700">A</div><div><div class="msg-time" style="text-align:right">9:42 AM</div><div class="msg-bubble">What does a deep clean at the dentist involve?</div></div></div>
+        <div class="msg ai"><div class="msg-avatar" style="background:linear-gradient(135deg,#4eff7a,#0f5a25)">🩺</div><div><div class="msg-time">9:42 AM</div><div class="msg-bubble">A deep clean (scaling and root planing) removes tartar buildup below the gumline. It typically takes 1–2 visits and targets early gum disease. Based on your plan, your estimated cost is <strong>$16.00</strong> after insurance. 🦷</div></div></div>
+      </div>
+      <div class="chat-suggestions" id="suggestions">
+        <button class="suggestion-chip" onclick="sendSuggestion(this,'What vaccines do I need?')">What vaccines do I need?</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this,'Explain my deductible')">Explain my deductible</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this,'Am I on track with savings?')">Am I on track with savings?</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this,'What is a blood draw for?')">What is a blood draw for?</button>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chat-input" type="text" placeholder="Ask anything about your health...">
+        <button class="chat-send" onclick="sendChat()">➤</button>
+      </div>
+    </div>
+
+    <!-- HSA PAGE -->
+    <div class="page" id="page-hsa">
+      <div class="page-header">Your <span>HSA</span></div>
+      <div class="cost-card" style="margin-bottom:16px;overflow:visible;padding:20px 24px 20px">
+        <div class="cost-label">Current HSA Balance</div>
+        <div class="cost-amount" style="font-size:42px"><sup>$</sup>2,450<sub>.00</sub></div>
+        <div style="display:flex;justify-content:center;gap:20px;margin-top:12px">
+          <div style="text-align:center"><div style="font-size:10px;color:var(--text-dim)">2025 Contributed</div><div style="font-size:13px;font-weight:700;color:var(--text-muted)">$1,800</div></div>
+          <div style="width:1px;background:var(--border)"></div>
+          <div style="text-align:center"><div style="font-size:10px;color:var(--text-dim)">Annual Limit</div><div style="font-size:13px;font-weight:700;color:var(--green-bright)">$4,150</div></div>
+          <div style="width:1px;background:var(--border)"></div>
+          <div style="text-align:center"><div style="font-size:10px;color:var(--text-dim)">YTD Spent</div><div style="font-size:13px;font-weight:700;color:var(--text-muted)">$1,200</div></div>
+        </div>
+      </div>
+      <div class="section-title">2025 Contribution Progress</div>
+      <div class="progress-track" style="margin-bottom:6px"><div class="progress-fill" style="width:43%"></div></div>
+      <div class="progress-label">$1,800 contributed · $2,350 remaining to max</div>
+      <div class="section-title">What is an HSA?</div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;font-size:12px;color:var(--text-muted);line-height:1.7">
+        A <strong style="color:var(--text-primary)">Health Savings Account (HSA)</strong> is a tax-advantaged account used to pay for qualified medical expenses. It requires a High Deductible Health Plan (HDHP).<br><br>
+        HSAs offer a <strong style="color:var(--green-bright)">triple tax advantage</strong> — contributions are pre-tax, growth is tax-free, and qualified withdrawals are tax-free.
+      </div>
+      <div class="section-title">Key Benefits</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;display:flex;align-items:flex-start;gap:12px"><span style="font-size:18px;flex-shrink:0">💸</span><div><div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:2px">Triple Tax Savings</div><div style="font-size:11px;color:var(--text-muted)">Contributions, growth, and qualified withdrawals are all tax-free.</div></div></div>
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;display:flex;align-items:flex-start;gap:12px"><span style="font-size:18px;flex-shrink:0">♾️</span><div><div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:2px">Funds Roll Over Forever</div><div style="font-size:11px;color:var(--text-muted)">Unlike FSAs, unused HSA funds never expire — they roll over year to year.</div></div></div>
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;display:flex;align-items:flex-start;gap:12px"><span style="font-size:18px;flex-shrink:0">📈</span><div><div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:2px">Invest &amp; Grow</div><div style="font-size:11px;color:var(--text-muted)">Once your balance exceeds $1,000, you can invest in mutual funds and ETFs.</div></div></div>
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;display:flex;align-items:flex-start;gap:12px"><span style="font-size:18px;flex-shrink:0">🏦</span><div><div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:2px">Retirement Flexibility</div><div style="font-size:11px;color:var(--text-muted)">After age 65, withdraw for any reason penalty-free (taxed like a traditional 401k).</div></div></div>
+      </div>
+      <div class="section-title">2025 Contribution Limits</div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text-muted)">Individual Coverage</span><span style="font-size:13px;font-weight:700;color:var(--green-bright)">$4,150</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border)"><span style="font-size:12px;color:var(--text-muted)">Family Coverage</span><span style="font-size:13px;font-weight:700;color:var(--green-bright)">$8,300</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px"><span style="font-size:12px;color:var(--text-muted)">55+ Catch-Up Bonus</span><span style="font-size:13px;font-weight:700;color:var(--green-bright)">+$1,000</span></div>
+      </div>
+      <div class="section-title">Common Eligible Expenses</div>
+      <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px">
+        <span class="tag" style="font-size:11px;padding:4px 10px">Doctor visits</span>
+        <span class="tag" style="font-size:11px;padding:4px 10px">Prescriptions</span>
+        <span class="tag" style="font-size:11px;padding:4px 10px">Dental care</span>
+        <span class="tag" style="font-size:11px;padding:4px 10px">Vision / glasses</span>
+        <span class="tag" style="font-size:11px;padding:4px 10px">Lab tests</span>
+        <span class="tag" style="font-size:11px;padding:4px 10px">Mental health</span>
+        <span class="tag" style="font-size:11px;padding:4px 10px">Physical therapy</span>
+        <span class="tag" style="font-size:11px;padding:4px 10px">Chiropractic</span>
+        <span class="tag" style="font-size:11px;padding:4px 10px">Insulin &amp; supplies</span>
+        <span class="tag" style="font-size:11px;padding:4px 10px">OTC medications</span>
+        <span class="tag" style="font-size:11px;padding:4px 10px">Sunscreen SPF 30+</span>
+        <span class="tag" style="font-size:11px;padding:4px 10px">Menstrual products</span>
+      </div>
+      <div class="section-title">HSA vs FSA — Quick Compare</div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:12px">
+        <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;border-bottom:1px solid var(--border)">
+          <div style="padding:10px 12px;font-size:10px;color:var(--text-dim);font-weight:700;text-transform:uppercase"></div>
+          <div style="padding:10px 8px;font-size:11px;color:var(--green-bright);font-weight:700;text-align:center;border-left:1px solid var(--border)">HSA</div>
+          <div style="padding:10px 8px;font-size:11px;color:#a0c4ff;font-weight:700;text-align:center;border-left:1px solid var(--border)">FSA</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;border-bottom:1px solid var(--border)"><div style="padding:9px 12px;font-size:11px;color:var(--text-muted)">Rollover</div><div style="padding:9px 8px;font-size:11px;text-align:center;border-left:1px solid var(--border)">✅ Full</div><div style="padding:9px 8px;font-size:11px;text-align:center;border-left:1px solid var(--border)">⚠️ $640</div></div>
+        <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;border-bottom:1px solid var(--border)"><div style="padding:9px 12px;font-size:11px;color:var(--text-muted)">Portable</div><div style="padding:9px 8px;font-size:11px;text-align:center;border-left:1px solid var(--border)">✅ Yes</div><div style="padding:9px 8px;font-size:11px;text-align:center;border-left:1px solid var(--border)">❌ No</div></div>
+        <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;border-bottom:1px solid var(--border)"><div style="padding:9px 12px;font-size:11px;color:var(--text-muted)">Invest funds</div><div style="padding:9px 8px;font-size:11px;text-align:center;border-left:1px solid var(--border)">✅ Yes</div><div style="padding:9px 8px;font-size:11px;text-align:center;border-left:1px solid var(--border)">❌ No</div></div>
+        <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr"><div style="padding:9px 12px;font-size:11px;color:var(--text-muted)">Needs HDHP</div><div style="padding:9px 8px;font-size:11px;text-align:center;border-left:1px solid var(--border)">✅ Yes</div><div style="padding:9px 8px;font-size:11px;text-align:center;border-left:1px solid var(--border)">❌ No</div></div>
+      </div>
+      <div class="section-title">HSA Savings Calculator</div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <label style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:6px">Monthly Contribution ($)</label>
+            <input id="hsa-monthly" type="number" value="200" min="0" max="1000"
+              style="width:100%;background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-size:14px;color:var(--text-primary);font-family:'DM Sans',sans-serif;outline:none"
+              oninput="calcHSA()">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:6px">Years to Grow</label>
+            <input id="hsa-years" type="range" min="1" max="30" value="10"
+              style="width:100%;accent-color:var(--green-bright)"
+              oninput="calcHSA();document.getElementById('hsa-years-val').textContent=this.value+' yrs'">
+            <div style="display:flex;justify-content:space-between;margin-top:4px">
+              <span style="font-size:10px;color:var(--text-dim)">1 yr</span>
+              <span id="hsa-years-val" style="font-size:10px;color:var(--green-bright);font-weight:700">10 yrs</span>
+              <span style="font-size:10px;color:var(--text-dim)">30 yrs</span>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:6px">Est. Annual Return (%)</label>
+            <input id="hsa-rate" type="range" min="1" max="10" value="6" step="0.5"
+              style="width:100%;accent-color:var(--green-bright)"
+              oninput="calcHSA();document.getElementById('hsa-rate-val').textContent=parseFloat(this.value).toFixed(1)+'%'">
+            <div style="display:flex;justify-content:space-between;margin-top:4px">
+              <span style="font-size:10px;color:var(--text-dim)">1%</span>
+              <span id="hsa-rate-val" style="font-size:10px;color:var(--green-bright);font-weight:700">6.0%</span>
+              <span style="font-size:10px;color:var(--text-dim)">10%</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:var(--bg-card2);border-radius:var(--radius-sm);padding:12px;text-align:center">
+            <div style="font-size:10px;color:var(--text-dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em">Total Contributed</div>
+            <div id="hsa-total-contrib" style="font-size:18px;font-weight:700;color:var(--text-primary)">$24,000</div>
+          </div>
+          <div style="background:var(--bg-card2);border-radius:var(--radius-sm);padding:12px;text-align:center">
+            <div style="font-size:10px;color:var(--text-dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em">Projected Balance</div>
+            <div id="hsa-projected" style="font-size:18px;font-weight:700;color:var(--green-bright)">$32,776</div>
+          </div>
+          <div style="background:var(--bg-card2);border-radius:var(--radius-sm);padding:12px;text-align:center">
+            <div style="font-size:10px;color:var(--text-dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em">Tax Savings Est.</div>
+            <div id="hsa-tax-saved" style="font-size:18px;font-weight:700;color:#ffc832">$6,720</div>
+          </div>
+          <div style="background:var(--bg-card2);border-radius:var(--radius-sm);padding:12px;text-align:center">
+            <div style="font-size:10px;color:var(--text-dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em">Investment Growth</div>
+            <div id="hsa-growth" style="font-size:18px;font-weight:700;color:#a0c4ff">$8,776</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,rgba(78,255,122,0.08),rgba(43,201,84,0.03));border:1px solid rgba(78,255,122,0.2);border-radius:var(--radius);padding:16px;margin-bottom:8px">
+        <div style="font-size:11px;color:var(--green-bright);font-weight:700;margin-bottom:6px">💡 Amy's Tip</div>
+        <div style="font-size:12px;color:var(--text-muted);line-height:1.6">You can contribute <strong style="color:var(--text-primary)">$2,350 more</strong> before the 2025 limit. Contributing just $200/month would cover most of your projected $3,600 annual healthcare cost — completely tax-free!</div>
+      </div>
+    </div>
+
+    <!-- MODAL: Add Visit -->
+    <div class="modal-overlay" id="visit-modal">
+      <div class="modal-sheet">
+        <div class="modal-handle"></div>
+        <div class="modal-title">Schedule Appointment</div>
+        <div class="form-group">
+          <label class="form-label">Visit Type</label>
+          <select class="form-select" id="nv-type"><option>Dentist</option><option>Primary Care</option><option>Labs</option><option>Physical</option><option>Specialist</option><option>Urgent Care</option><option>Other</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input class="form-input" id="nv-date" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Procedures (select all that apply)</label>
+          <div class="proc-picker" id="proc-picker">
+            <button class="proc-pick" onclick="togglePick(this)">Deep clean</button>
+            <button class="proc-pick" onclick="togglePick(this)">X-Ray</button>
+            <button class="proc-pick" onclick="togglePick(this)">Blood draw</button>
+            <button class="proc-pick" onclick="togglePick(this)">Physician</button>
+            <button class="proc-pick" onclick="togglePick(this)">TDAP</button>
+            <button class="proc-pick" onclick="togglePick(this)">HPV</button>
+            <button class="proc-pick" onclick="togglePick(this)">MRI</button>
+            <button class="proc-pick" onclick="togglePick(this)">EKG</button>
+            <button class="proc-pick" onclick="togglePick(this)">Consultation</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Estimated Total Cost ($)</label>
+          <input class="form-input" id="nv-cost" type="number" placeholder="e.g. 75">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Provider / Clinic</label>
+          <input class="form-input" id="nv-provider" type="text" placeholder="e.g. Aspen Dental">
+        </div>
+        <div class="modal-btns">
+          <button class="modal-cancel" onclick="closeModal('visit-modal')">Cancel</button>
+          <button class="modal-confirm" onclick="addVisit()">Add Visit ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: Add Rx -->
+    <div class="modal-overlay" id="rx-modal">
+      <div class="modal-sheet">
+        <div class="modal-handle"></div>
+        <div class="modal-title">Add Prescription</div>
+        <div class="form-group"><label class="form-label">Medication Name</label><input class="form-input" id="nr-name" type="text" placeholder="e.g. Metformin"></div>
+        <div class="form-group"><label class="form-label">Dosage & Frequency</label><input class="form-input" id="nr-dose" type="text" placeholder="e.g. 500mg · Twice daily"></div>
+        <div class="form-group"><label class="form-label">Prescribing Doctor</label><input class="form-input" id="nr-doc" type="text" placeholder="e.g. Dr. Smith"></div>
+        <div class="form-group"><label class="form-label">Refills Remaining</label><input class="form-input" id="nr-refills" type="number" placeholder="e.g. 3" min="0" max="12"></div>
+        <div class="form-group"><label class="form-label">Days Supply Remaining</label><input class="form-input" id="nr-days" type="number" placeholder="e.g. 30" min="1" max="90"></div>
+        <div class="modal-btns">
+          <button class="modal-cancel" onclick="closeModal('rx-modal')">Cancel</button>
+          <button class="modal-confirm" onclick="addRx()">Add Prescription ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: New Post -->
+    <div class="modal-overlay" id="post-modal">
+      <div class="modal-sheet">
+        <div class="modal-handle"></div>
+        <div class="modal-title">New Post</div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-select" id="np-cat"><option>Insurance Tips</option><option>Chronic Care</option><option>Dental</option><option>Mental Health</option><option>General</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Title</label><input class="form-input" id="np-title" type="text" placeholder="What's your post about?"></div>
+        <div class="form-group"><label class="form-label">Content</label><textarea class="form-textarea" id="np-body" placeholder="Share your experience or question..."></textarea></div>
+        <div class="modal-btns">
+          <button class="modal-cancel" onclick="closeModal('post-modal')">Cancel</button>
+          <button class="modal-confirm" onclick="addPost()">Post ✓</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screen -->
+
+  <div class="bottom-nav" style="padding:0 4px 16px">
+    <div class="nav-item active" id="nav-home" onclick="switchPage('home')" style="padding:6px 7px"><div class="nav-icon"><img src="images/home-icon-silhouette-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">Home</div></div>
+    <div class="nav-item" id="nav-upcoming" onclick="switchPage('upcoming')" style="padding:6px 7px"><div class="nav-icon"><img src="images/meeting-date-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">Visits</div></div>
+    <div class="nav-item" id="nav-rx" onclick="switchPage('rx')" style="padding:6px 7px"><div class="nav-icon"><img src="images/pill-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">Rx</div></div>
+    <div class="nav-item" id="nav-hsa" onclick="switchPage('hsa')" style="padding:6px 7px"><div class="nav-icon"><img src="images/bank-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">HSA</div></div>
+    <div class="nav-item" id="nav-forums" onclick="switchPage('forums')" style="padding:6px 7px"><div class="nav-icon"><img src="images/brainstorming-icon-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">Forums</div></div>
+    <div class="nav-item" id="nav-chat" onclick="switchPage('chat')" style="padding:6px 7px"><div class="nav-icon"><img src="images/robot-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">AI</div></div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──
+let visits = [
+  {id:1,date:'Feb 17',type:'Dentist',tags:['Deep clean','X-Ray'],cost:53,procs:[{n:'Deep clean',p:16,bright:true},{n:'X-Ray',p:37,bright:false}],provider:'Aspen Dental',notes:'Arrive 10 min early'},
+  {id:2,date:'Feb 26',type:'Primary Care',tags:['Physician','TDAP','HPV'],cost:167,procs:[{n:'Physician',p:80,bright:true},{n:'TDAP',p:47,bright:false},{n:'HPV',p:40,bright:false}],provider:'Dr. Chen',notes:'Bring insurance card'},
+  {id:3,date:'Feb 27',type:'Labs',tags:['Blood draw','X-Ray'],cost:150,procs:[{n:'Blood draw',p:75,bright:true},{n:'X-Ray',p:75,bright:false}],provider:'Quest Diagnostics',notes:'Fast 8hrs before blood draw'},
+  {id:4,date:'Mar 9',type:'Physical',tags:['Blood draw','X-Ray'],cost:53,procs:[{n:'Blood draw',p:28,bright:true},{n:'X-Ray',p:25,bright:false}],provider:'Dr. Patel',notes:''},
+];
+
+let rxList = [
+  {id:1,name:'Metformin',dose:'500mg · Twice daily',doc:'Dr. Chen',refills:'3 of 5',days:18,maxDays:30,status:'active'},
+  {id:2,name:'Lisinopril',dose:'10mg · Once daily',doc:'Dr. Patel',refills:'1 of 5',days:4,maxDays:30,status:'refill'},
+  {id:3,name:'Atorvastatin',dose:'20mg · Once daily at night',doc:'Dr. Patel',refills:'4 of 5',days:41,maxDays:60,status:'active'},
+];
+
+let posts = [
+  {id:1,user:'Jessica M.',init:'J',av:'linear-gradient(135deg,#4eff7a,#1a5c30)',tc:'#0a1a0e',cat:'Insurance Tips',cbg:'rgba(78,255,122,0.15)',ctc:'var(--green-bright)',title:'How I saved $400 negotiating my ER bill',excerpt:"I called the billing department directly and asked for an itemized bill. Found 3 charges that were duplicates and got them removed immediately...",likes:42,replies:18,views:234,time:'2 hours ago'},
+  {id:2,user:'Robert K.',init:'R',av:'linear-gradient(135deg,#2bc954,#0a4a20)',tc:'#e8f5ec',cat:'Chronic Care',cbg:'rgba(150,200,255,0.1)',ctc:'#a0c4ff',title:"Managing Type 2 Diabetes costs — what actually works",excerpt:"Been diabetic for 8 years. Here's what nobody tells you about reducing your out-of-pocket expenses on insulin and test strips...",likes:89,replies:37,views:512,time:'5 hours ago'},
+  {id:3,user:'Tara L.',init:'T',av:'linear-gradient(135deg,#ffc832,#994400)',tc:'#fff',cat:'Dental',cbg:'rgba(255,200,50,0.1)',ctc:'#ffc832',title:'Is the Dental HMO worth it vs PPO?',excerpt:"I switched from a PPO to an HMO plan last year. Here's a detailed breakdown of what I paid for the same procedures under each...",likes:27,replies:14,views:189,time:'1 day ago'},
+];
+
+let activeFilter = 'All';
+
+// ── RENDER VISITS ──
+function visitCardHTML(v, idPrefix) {
+  const procsHTML = v.procs.map(p=>`<div class="proc-card"><div class="proc-name">${p.n}</div><div class="${p.bright?'proc-price':'proc-price-dim'}">$${p.p}.00</div></div>`).join('');
+  const tagsHTML = v.tags.map(t=>`<span class="tag">${t}</span>`).join('');
+  const notesHTML = v.notes ? `<div class="visit-meta-item"><div class="lbl">Notes</div><div class="val">${v.notes}</div></div>` : '';
+  return `<div class="visit-card" id="${idPrefix}${v.id}" onclick="toggleVisit('${idPrefix}${v.id}')">
+    <div class="visit-card-header">
+      <div class="visit-left">
+        <span class="cal-icon">📅</span>
+        <div>
+          <div class="visit-date">${v.date} <span class="cal-badge">+ Calendar</span></div>
+          <div class="visit-type">${v.type}</div>
+          <div class="visit-tags">${tagsHTML}</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:4px">
+        <div class="visit-cost"><div class="visit-cost-label">Total estimated cost:</div><div class="visit-cost-val">$${v.cost}<sub>.00</sub></div></div>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="visit-details"><div class="visit-details-inner">
+      <div class="procedure-grid">${procsHTML}</div>
+      <div class="visit-meta">
+        <div class="visit-meta-item"><div class="lbl">Provider</div><div class="val">${v.provider}</div></div>
+        ${notesHTML}
+      </div>
+    </div></div>
+  </div>`;
+}
+
+function renderVisits() {
+  document.getElementById('all-visits').innerHTML = visits.map(v=>visitCardHTML(v,'vc-')).join('');
+  document.getElementById('home-visits').innerHTML = visits.slice(0,2).map(v => {
+    const tagsHTML = v.tags.map(t=>`<span class="tag">${t}</span>`).join('');
+    return `<div class="visit-card" onclick="switchPage('upcoming')" style="cursor:pointer">
+      <div class="visit-card-header">
+        <div class="visit-left">
+          <span class="cal-icon">📅</span>
+          <div>
+            <div class="visit-date">${v.date} <span class="cal-badge">+ Calendar</span></div>
+            <div class="visit-type">${v.type}</div>
+            <div class="visit-tags">${tagsHTML}</div>
+          </div>
+        </div>
+        <div class="visit-cost">
+          <div class="visit-cost-label">Total estimated cost:</div>
+          <div class="visit-cost-val">$${v.cost}<sub>.00</sub></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleVisit(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('expanded');
+}
+
+// ── RENDER RX ──
+function renderRx() {
+  document.getElementById('rx-list').innerHTML = rxList.map(rx => {
+    const pct = Math.min(100, Math.round((rx.days/rx.maxDays)*100));
+    const fill = rx.status==='refill' ? 'linear-gradient(90deg,#ffc832,#ff9800)' : 'linear-gradient(90deg,#4eff7a,#2bc954)';
+    const badge = rx.status==='refill'
+      ? `<span class="rx-status-refill">Refill Soon</span>`
+      : `<span class="rx-status-active">Active</span>`;
+    const refillBtn = rx.status==='refill'
+      ? `<button class="refill-btn" onclick="event.stopPropagation();requestRefill(this,${rx.id})">Request Refill</button>` : '';
+    return `<div class="rx-card" id="rxc-${rx.id}" onclick="toggleRx(${rx.id})">
+      <div class="rx-card-top">
+        <div class="rx-row">
+          <div><div class="rx-name">${rx.name}</div><div class="rx-dose">${rx.dose}</div></div>
+          <div style="display:flex;align-items:center;gap:6px">${badge}<span class="chevron">▼</span></div>
+        </div>
+        <div class="rx-bar-track"><div class="rx-bar-fill" style="width:${pct}%;background:${fill}"></div></div>
+        <div class="rx-bar-label">${rx.days} days remaining</div>
+      </div>
+      <div class="rx-expand-body"><div class="rx-expand-inner">
+        <div class="rx-details-row">
+          <div class="rx-detail"><div class="lbl">Prescriber</div><div class="val">${rx.doc}</div></div>
+          <div class="rx-detail"><div class="lbl">Refills left</div><div class="val">${rx.refills}</div></div>
+          <div class="rx-detail"><div class="lbl">Days supply</div><div class="val">${rx.maxDays}d</div></div>
+        </div>
+        ${refillBtn}
+      </div></div>
+    </div>`;
+  }).join('');
+}
+
+function toggleRx(id) {
+  const el = document.getElementById('rxc-'+id);
+  if (el) el.classList.toggle('expanded');
+}
+
+function requestRefill(btn, id) {
+  btn.textContent = '✓ Request Sent';
+  btn.style.background = 'rgba(78,255,122,0.1)';
+  btn.disabled = true;
+  const rx = rxList.find(r=>r.id===id);
+  if (rx) { rx.status = 'requested'; }
+}
+
+// ── RENDER POSTS ──
+const catColors = {
+  'Insurance Tips':{bg:'rgba(78,255,122,0.15)',tc:'var(--green-bright)'},
+  'Chronic Care':{bg:'rgba(150,200,255,0.1)',tc:'#a0c4ff'},
+  'Dental':{bg:'rgba(255,200,50,0.1)',tc:'#ffc832'},
+  'Mental Health':{bg:'rgba(200,150,255,0.1)',tc:'#d0aaff'},
+  'General':{bg:'rgba(255,255,255,0.07)',tc:'#aaa'},
+};
+const avGrads = ['linear-gradient(135deg,#4eff7a,#1a5c30)','linear-gradient(135deg,#2bc954,#0a4a20)','linear-gradient(135deg,#ffc832,#994400)','linear-gradient(135deg,#7eb3ff,#1a3a80)'];
+
+function renderPosts() {
+  const filtered = activeFilter==='All' ? posts : posts.filter(p=>p.cat===activeFilter);
+  if (!filtered.length) {
+    document.getElementById('forum-posts').innerHTML = `<div style="text-align:center;color:var(--text-dim);padding:32px;font-size:13px">No posts in this category yet.<br>Be the first to post!</div>`;
+    return;
+  }
+  document.getElementById('forum-posts').innerHTML = filtered.map(p=>`
+    <div class="forum-post">
+      <div class="forum-post-header">
+        <div class="forum-avatar" style="background:${p.av};color:${p.tc}">${p.init}</div>
+        <div><div class="forum-user">${p.user}</div><div class="forum-time">${p.time}</div></div>
+        <div style="margin-left:auto"><span class="forum-badge" style="background:${p.cbg};color:${p.ctc}">${p.cat}</span></div>
+      </div>
+      <div class="forum-title">${p.title}</div>
+      <div class="forum-excerpt">${p.excerpt}</div>
+      <div class="forum-footer">
+        <span class="forum-stat" onclick="likePost(${p.id},this)" style="cursor:pointer">❤️ ${p.likes}</span>
+        <span class="forum-stat">💬 ${p.replies} replies</span>
+        <span class="forum-stat">👁 ${p.views}</span>
+      </div>
+    </div>`).join('');
+}
+
+function filterForum(el) {
+  document.querySelectorAll('.forum-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  activeFilter = el.dataset.cat;
+  renderPosts();
+}
+
+function likePost(id, el) {
+  const p = posts.find(x=>x.id===id);
+  if (p) { p.likes++; el.textContent='❤️ '+p.likes; }
+}
+
+// ── MODALS ──
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target===m) m.classList.remove('open'); });
+});
+function togglePick(el) { el.classList.toggle('selected'); }
+
+function addVisit() {
+  const type = document.getElementById('nv-type').value;
+  const dateVal = document.getElementById('nv-date').value;
+  const cost = parseFloat(document.getElementById('nv-cost').value) || 0;
+  const provider = document.getElementById('nv-provider').value.trim() || 'TBD';
+  const picked = [...document.querySelectorAll('#proc-picker .selected')].map(e=>e.textContent);
+  if (!dateVal) { alert('Please select a date.'); return; }
+  const d = new Date(dateVal+'T12:00:00');
+  const dateStr = d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  const procs = picked.length > 0
+    ? picked.map((n,i)=>({n,p:Math.round(cost/Math.max(picked.length,1)),bright:i===0}))
+    : [{n:type,p:cost,bright:true}];
+  visits.push({id:Date.now(),date:dateStr,type,tags:picked.length>0?picked:[type],cost,procs,provider,notes:''});
+  document.querySelectorAll('#proc-picker .selected').forEach(e=>e.classList.remove('selected'));
+  document.getElementById('nv-date').value='';
+  document.getElementById('nv-cost').value='';
+  document.getElementById('nv-provider').value='';
+  renderVisits();
+  closeModal('visit-modal');
+}
+
+function addRx() {
+  const name = document.getElementById('nr-name').value.trim();
+  const dose = document.getElementById('nr-dose').value.trim();
+  const doc = document.getElementById('nr-doc').value.trim() || 'Unknown';
+  const refills = parseInt(document.getElementById('nr-refills').value)||0;
+  const days = parseInt(document.getElementById('nr-days').value)||30;
+  if (!name) { alert('Please enter a medication name.'); return; }
+  rxList.push({id:Date.now(),name,dose:dose||'See label',doc,refills:`${refills} of ${refills}`,days,maxDays:days,status:days<=7?'refill':'active'});
+  ['nr-name','nr-dose','nr-doc','nr-refills','nr-days'].forEach(id=>document.getElementById(id).value='');
+  renderRx();
+  closeModal('rx-modal');
+}
+
+function addPost() {
+  const title = document.getElementById('np-title').value.trim();
+  const body = document.getElementById('np-body').value.trim();
+  const cat = document.getElementById('np-cat').value;
+  if (!title||!body) { alert('Please fill in the title and content.'); return; }
+  const cc = catColors[cat]||catColors['General'];
+  const av = avGrads[posts.length%avGrads.length];
+  posts.unshift({id:Date.now(),user:'Amy R.',init:'A',av,tc:'#e8f5ec',cat,cbg:cc.bg,ctc:cc.tc,title,excerpt:body.substring(0,100)+(body.length>100?'...':''),likes:0,replies:0,views:1,time:'Just now'});
+  document.getElementById('np-title').value='';
+  document.getElementById('np-body').value='';
+  activeFilter='All';
+  document.querySelectorAll('.forum-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.forum-tab[data-cat="All"]').classList.add('active');
+  renderPosts();
+  closeModal('post-modal');
+}
+
+// ── NAV ──
+function switchPage(name) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.getElementById('nav-'+name).classList.add('active');
+}
+
+// ── AI CHAT ──
+const aiResp = {
+  'What vaccines do I need?':"Based on your age and records, you're due for TDAP and HPV vaccines at your Feb 26 Primary Care visit. These are already included in your estimated cost of $167. Your insurance covers preventive vaccines at 100%! 💉",
+  'Explain my deductible':"Your annual deductible is $1,500. You've met $800 so far this year. Once you hit $1,500, your insurance pays 80% of covered services. You're about $700 away — your upcoming Feb visits will help reach it! 📊",
+  'Am I on track with savings?':"Great news! You've saved $1,800 of your $3,600 annual goal — exactly 50% with 4 months completed. You're slightly ahead of pace. Your upcoming visits total $423, fitting comfortably in your monthly budget. 🎯",
+  'What is a blood draw for?':"A blood draw collects a small sample to check cholesterol, blood sugar, kidney function, and more. Your Feb 27 lab visit includes a panel likely ordered by Dr. Chen. Results typically come back within 24–48 hours. 🩸"
+};
+function sendSuggestion(el,t){addUMsg(t);setTimeout(()=>{addTyping();setTimeout(()=>{removeTyping();addAMsg(aiResp[t]||"Great question! I'd recommend discussing this with your care team at your next visit.");},1400);},300);}
+function sendChat(){const inp=document.getElementById('chat-input');const t=inp.value.trim();if(!t)return;inp.value='';addUMsg(t);setTimeout(()=>{addTyping();setTimeout(()=>{removeTyping();addAMsg('Thanks for asking! Based on your health profile, I\'d recommend discussing "'+t.substring(0,35)+(t.length>35?'...':"\"")+'with your primary care physician. Want help preparing questions for your next visit?');},1600);},300);}
+document.getElementById('chat-input').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat();});
+function addUMsg(t){const m=document.getElementById('chat-messages');m.innerHTML+=`<div class="msg user"><div class="msg-avatar" style="background:linear-gradient(135deg,#2bc954,#0a4a20);color:#e8f5ec;font-weight:700">A</div><div><div class="msg-time" style="text-align:right">Just now</div><div class="msg-bubble">${t}</div></div></div>`;m.scrollTop=9999;}
+function addAMsg(t){const m=document.getElementById('chat-messages');m.innerHTML+=`<div class="msg ai"><div class="msg-avatar" style="background:linear-gradient(135deg,#4eff7a,#0f5a25)">🩺</div><div><div class="msg-time">Just now</div><div class="msg-bubble">${t}</div></div></div>`;m.scrollTop=9999;}
+function addTyping(){const m=document.getElementById('chat-messages');m.innerHTML+=`<div class="msg ai" id="typing-msg"><div class="msg-avatar" style="background:linear-gradient(135deg,#4eff7a,#0f5a25)">🩺</div><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;m.scrollTop=9999;}
+function removeTyping(){const t=document.getElementById('typing-msg');if(t)t.remove();}
+
+// ── HSA CALCULATOR ──
+function calcHSA() {
+  const monthly = parseFloat(document.getElementById('hsa-monthly').value) || 0;
+  const years = parseInt(document.getElementById('hsa-years').value) || 10;
+  const rate = parseFloat(document.getElementById('hsa-rate').value) / 100;
+  const months = years * 12;
+  const monthlyRate = rate / 12;
+  // FV of annuity + existing balance compounded
+  const existingGrowth = 2450 * Math.pow(1 + rate, years);
+  const fv = monthlyRate > 0
+    ? monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate)
+    : monthly * months;
+  const total = existingGrowth + fv;
+  const totalContrib = monthly * months;
+  const growth = total - totalContrib - 2450;
+  const taxSaved = Math.round(totalContrib * 0.28); // ~28% effective rate
+
+  const fmt = n => '$' + Math.round(n).toLocaleString();
+  document.getElementById('hsa-total-contrib').textContent = fmt(totalContrib);
+  document.getElementById('hsa-projected').textContent = fmt(total);
+  document.getElementById('hsa-tax-saved').textContent = fmt(taxSaved);
+  document.getElementById('hsa-growth').textContent = fmt(Math.max(0, growth));
+}
+
+// ── INIT ──
+renderVisits(); renderRx(); renderPosts();
+</script>
+</body>
+</html>
