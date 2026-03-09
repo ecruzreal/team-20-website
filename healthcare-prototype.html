@@ -352,7 +352,9 @@ function visitCardHTML(v, idPrefix) {
   return `<div class="visit-card" id="${idPrefix}${v.id}" onclick="toggleVisit('${idPrefix}${v.id}')">
     <div class="visit-card-header">
       <div class="visit-left">
-        <span class="cal-icon">📅</span>
+        <span class="cal-icon"><svg xmlns="http://www.w3.org/2000/svg" filter="invert(100%)" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+</svg></span>
         <div>
           <div class="visit-date">${v.date} <span class="cal-badge">+ Calendar</span></div>
           <div class="visit-type">${v.type}</div>
@@ -381,7 +383,9 @@ function renderVisits() {
     return `<div class="visit-card" onclick="switchPage('upcoming')" style="cursor:pointer">
       <div class="visit-card-header">
         <div class="visit-left">
-          <span class="cal-icon">📅</span>
+          <span class="cal-icon"><svg xmlns="http://www.w3.org/2000/svg" filter="invert(100%)" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+</svg></span>
           <div>
             <div class="visit-date">${v.date} <span class="cal-badge">+ Calendar</span></div>
             <div class="visit-type">${v.type}</div>

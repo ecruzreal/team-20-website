@@ -25,8 +25,8 @@
   .nav-icon { font-size:20px; color:var(--text-dim); transition:color 0.2s; }
   .nav-label { font-size:9px; color:var(--text-dim); font-weight:500; text-transform:uppercase; letter-spacing:0.05em; transition:color 0.2s; }
 
-  .page-header { font-size:26px; font-weight:700; color:var(--text-primary); margin-bottom:20px; margin-top:8px; line-height:1.2; }
-  .page-header span { font-style:italic; color:var(--green-bright); font-family:'DM Serif Display',serif; font-weight:400; }
+  .page-header { font-size:26px; font-weight:100; color:var(--text-primary); margin-bottom:20px; margin-top:8px; line-height:1.2; }
+  .page-header span { color:var(--text-primary); font-weight:700; }
   .section-title { font-size:13px; font-weight:600; color:var(--text-primary); margin-bottom:12px; letter-spacing:0.02em; }
   .tag { font-size:10px; padding:2px 8px; border-radius:20px; border:1px solid var(--border); color:var(--text-muted); background:var(--green-muted); }
   .cal-badge { font-size:9px; padding:2px 7px; background:var(--green-bright); color:#0a1a0e; border-radius:20px; font-weight:700; display:inline-block; margin-top:4px; }
@@ -48,7 +48,7 @@
   .cost-card::before { content:''; position:absolute; top:-40px; left:50%; transform:translateX(-50%); width:200px; height:200px; background:radial-gradient(circle,rgba(78,255,122,0.08) 0%,transparent 70%); }
   .cost-label { font-size:12px; color:var(--text-muted); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:4px; }
   .cost-title { font-size:14px; color:var(--text-primary); margin-bottom:8px; }
-  .cost-amount { font-size:48px; font-weight:700; color:var(--text-primary); letter-spacing:-2px; line-height:1; }
+  .cost-amount { font-size:48px; font-weight:50px; color:var(--text-primary); letter-spacing:-2px; line-height:1; }
   .cost-amount sup { font-size:20px; vertical-align:super; letter-spacing:0; }
   .cost-amount sub { font-size:22px; color:var(--text-muted); }
   .cost-note { font-size:11px; color:var(--text-dim); margin-top:8px; display:flex; align-items:center; justify-content:center; gap:4px; }
