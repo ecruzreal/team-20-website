@@ -269,7 +269,7 @@
         </div>
         <div class="modal-btns">
           <button class="modal-cancel" onclick="closeModal('visit-modal')">Cancel</button>
-          <button class="modal-confirm" onclick="addVisit()">Add Visit ✓</button>
+          <button class="modal-confirm" onclick="addVisit()">Schedule Appointment ✓</button>
         </div>
       </div>
     </div>
@@ -313,11 +313,11 @@
 
   <div class="bottom-nav" style="padding:0 4px 16px">
     <div class="nav-item active" id="nav-home" onclick="switchPage('home')" style="padding:6px 7px"><div class="nav-icon"><img src="images/home-icon-silhouette-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">Home</div></div>
-    <div class="nav-item" id="nav-upcoming" onclick="switchPage('upcoming')" style="padding:6px 7px"><div class="nav-icon"><img src="images/meeting-date-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">Visits</div></div>
+    <div class="nav-item" id="nav-upcoming" onclick="switchPage('upcoming')" style="padding:6px 7px"><div class="nav-icon"><img src="images/stethoscope-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">Visits</div></div>
     <div class="nav-item" id="nav-rx" onclick="switchPage('rx')" style="padding:6px 7px"><div class="nav-icon"><img src="images/pill-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">Rx</div></div>
-    <div class="nav-item" id="nav-hsa" onclick="switchPage('hsa')" style="padding:6px 7px"><div class="nav-icon"><img src="images/bank-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">HSA</div></div>
     <div class="nav-item" id="nav-forums" onclick="switchPage('forums')" style="padding:6px 7px"><div class="nav-icon"><img src="images/brainstorming-icon-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">Forums</div></div>
     <div class="nav-item" id="nav-chat" onclick="switchPage('chat')" style="padding:6px 7px"><div class="nav-icon"><img src="images/robot-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">AI</div></div>
+    <div class="nav-item" id="nav-hsa" onclick="switchPage('hsa')" style="padding:6px 7px"><div class="nav-icon"><img src="images/bank-svgrepo-com.svg" height="25rem" alt=""></div><div class="nav-label">HSA</div></div>
   </div>
 </div>
 
@@ -356,7 +356,7 @@ function visitCardHTML(v, idPrefix) {
   <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
 </svg></span>
         <div>
-          <div class="visit-date">${v.date} <span class="cal-badge">+ Calendar</span></div>
+          <div class="visit-date">${v.date} </div>
           <div class="visit-type">${v.type}</div>
           <div class="visit-tags">${tagsHTML}</div>
         </div>
@@ -387,7 +387,7 @@ function renderVisits() {
   <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
 </svg></span>
           <div>
-            <div class="visit-date">${v.date} <span class="cal-badge">+ Calendar</span></div>
+            <div class="visit-date">${v.date} </div>
             <div class="visit-type">${v.type}</div>
             <div class="visit-tags">${tagsHTML}</div>
           </div>
