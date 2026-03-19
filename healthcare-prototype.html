@@ -257,6 +257,11 @@
             <button class="proc-pick" onclick="togglePick(this)">MRI</button>
             <button class="proc-pick" onclick="togglePick(this)">EKG</button>
             <button class="proc-pick" onclick="togglePick(this)">Consultation</button>
+            <button class="proc-pick" id="other-pick" onclick="toggleOther(this)" style="border-style:dashed">+ Other</button>
+          </div>
+          <div id="other-proc-wrap" style="display:none;margin-top:8px">
+            <input class="form-input" id="other-proc-input" type="text" placeholder="Type a procedure and press Enter…" onkeydown="addCustomProc(event)" style="font-size:12px;padding:8px 12px">
+            <div id="custom-procs" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div>
           </div>
         </div>
         <div class="form-group">
@@ -283,7 +288,8 @@
         <div class="form-group"><label class="form-label">Dosage & Frequency</label><input class="form-input" id="nr-dose" type="text" placeholder="e.g. 500mg · Twice daily"></div>
         <div class="form-group"><label class="form-label">Prescribing Doctor</label><input class="form-input" id="nr-doc" type="text" placeholder="e.g. Dr. Smith"></div>
         <div class="form-group"><label class="form-label">Refills Remaining</label><input class="form-input" id="nr-refills" type="number" placeholder="e.g. 3" min="0" max="12"></div>
-        <div class="form-group"><label class="form-label">Days Supply Remaining</label><input class="form-input" id="nr-days" type="number" placeholder="e.g. 30" min="1" max="90"></div>
+        <div class="form-group"><label class="form-label">Total Days Supply</label><input class="form-input" id="nr-max-days" type="number" placeholder="e.g. 30" min="1" max="365"></div>
+        <div class="form-group"><label class="form-label">Days Remaining</label><input class="form-input" id="nr-days" type="number" placeholder="e.g. 22" min="1" max="365"></div>
         <div class="modal-btns">
           <button class="modal-cancel" onclick="closeModal('rx-modal')">Cancel</button>
           <button class="modal-confirm" onclick="addRx()">Add Prescription ✓</button>
@@ -332,7 +338,7 @@ let visits = [
 
 let rxList = [
   {id:1,name:'Metformin',dose:'500mg · Twice daily',doc:'Dr. Chen',refills:'3 of 5',days:18,maxDays:30,status:'active'},
-  {id:2,name:'Lisinopril',dose:'10mg · Once daily',doc:'Dr. Patel',refills:'1 of 5',days:4,maxDays:30,status:'refill'},
+  {id:2,name:'Lisinopril',dose:'10mg · Once daily',doc:'Dr. Patel',refills:'1 of 5',days:10,maxDays:30,status:'refill'},
   {id:3,name:'Atorvastatin',dose:'20mg · Once daily at night',doc:'Dr. Patel',refills:'4 of 5',days:41,maxDays:60,status:'active'},
 ];
 
@@ -409,12 +415,13 @@ function toggleVisit(id) {
 // ── RENDER RX ──
 function renderRx() {
   document.getElementById('rx-list').innerHTML = rxList.map(rx => {
+    const needsRefill = rx.days <= 10;
     const pct = Math.min(100, Math.round((rx.days/rx.maxDays)*100));
-    const fill = rx.status==='refill' ? 'linear-gradient(90deg,#ffc832,#ff9800)' : 'linear-gradient(90deg,#4eff7a,#2bc954)';
-    const badge = rx.status==='refill'
+    const fill = needsRefill ? 'linear-gradient(90deg,#ffc832,#ff9800)' : 'linear-gradient(90deg,#4eff7a,#2bc954)';
+    const badge = needsRefill
       ? `<span class="rx-status-refill">Refill Soon</span>`
       : `<span class="rx-status-active">Active</span>`;
-    const refillBtn = rx.status==='refill'
+    const refillBtn = needsRefill
       ? `<button class="refill-btn" onclick="event.stopPropagation();requestRefill(this,${rx.id})">Request Refill</button>` : '';
     return `<div class="rx-card" id="rxc-${rx.id}" onclick="toggleRx(${rx.id})">
       <div class="rx-card-top">
@@ -508,7 +515,10 @@ function addVisit() {
   const dateVal = document.getElementById('nv-date').value;
   const cost = parseFloat(document.getElementById('nv-cost').value) || 0;
   const provider = document.getElementById('nv-provider').value.trim() || 'TBD';
-  const picked = [...document.querySelectorAll('#proc-picker .selected')].map(e=>e.textContent);
+  const picked = [
+    ...[...document.querySelectorAll('#proc-picker .selected')].map(e=>e.textContent).filter(t=>t!=='+ Other'),
+    ...[...document.querySelectorAll('#custom-procs .custom-chip')].map(e=>e.dataset.name)
+  ];
   if (!dateVal) { alert('Please select a date.'); return; }
   const d = new Date(dateVal+'T12:00:00');
   const dateStr = d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
@@ -517,6 +527,11 @@ function addVisit() {
     : [{n:type,p:cost,bright:true}];
   visits.push({id:Date.now(),date:dateStr,type,tags:picked.length>0?picked:[type],cost,procs,provider,notes:''});
   document.querySelectorAll('#proc-picker .selected').forEach(e=>e.classList.remove('selected'));
+  document.getElementById('custom-procs').innerHTML = '';
+  document.getElementById('other-proc-input').value = '';
+  document.getElementById('other-proc-wrap').style.display = 'none';
+  const otherPick = document.getElementById('other-pick');
+  if (otherPick) otherPick.classList.remove('selected');
   document.getElementById('nv-date').value='';
   document.getElementById('nv-cost').value='';
   document.getElementById('nv-provider').value='';
@@ -529,10 +544,11 @@ function addRx() {
   const dose = document.getElementById('nr-dose').value.trim();
   const doc = document.getElementById('nr-doc').value.trim() || 'Unknown';
   const refills = parseInt(document.getElementById('nr-refills').value)||0;
-  const days = parseInt(document.getElementById('nr-days').value)||30;
+  const maxDays = parseInt(document.getElementById('nr-max-days').value)||30;
+  const days = parseInt(document.getElementById('nr-days').value)||maxDays;
   if (!name) { alert('Please enter a medication name.'); return; }
-  rxList.push({id:Date.now(),name,dose:dose||'See label',doc,refills:`${refills} of ${refills}`,days,maxDays:days,status:days<=7?'refill':'active'});
-  ['nr-name','nr-dose','nr-doc','nr-refills','nr-days'].forEach(id=>document.getElementById(id).value='');
+  rxList.push({id:Date.now(),name,dose:dose||'See label',doc,refills:`${refills} of ${refills}`,days,maxDays:maxDays,status:days<=10?'refill':'active'});
+  ['nr-name','nr-dose','nr-doc','nr-refills','nr-max-days','nr-days'].forEach(id=>document.getElementById(id).value='');
   renderRx();
   closeModal('rx-modal');
 }
@@ -576,6 +592,32 @@ function addUMsg(t){const m=document.getElementById('chat-messages');m.innerHTML
 function addAMsg(t){const m=document.getElementById('chat-messages');m.innerHTML+=`<div class="msg ai"><div class="msg-avatar" style="background:linear-gradient(135deg,#4eff7a,#0f5a25)">🩺</div><div><div class="msg-time">Just now</div><div class="msg-bubble">${t}</div></div></div>`;m.scrollTop=9999;}
 function addTyping(){const m=document.getElementById('chat-messages');m.innerHTML+=`<div class="msg ai" id="typing-msg"><div class="msg-avatar" style="background:linear-gradient(135deg,#4eff7a,#0f5a25)">🩺</div><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;m.scrollTop=9999;}
 function removeTyping(){const t=document.getElementById('typing-msg');if(t)t.remove();}
+
+// –– OTHER PROCEDURES ––
+
+function toggleOther(el) {
+  el.classList.toggle('selected');
+  const wrap = document.getElementById('other-proc-wrap');
+  wrap.style.display = el.classList.contains('selected') ? 'block' : 'none';
+  if (el.classList.contains('selected')) {
+    setTimeout(() => document.getElementById('other-proc-input').focus(), 50);
+  }
+}
+
+function addCustomProc(e) {
+  if (e.key !== 'Enter') return;
+  const input = document.getElementById('other-proc-input');
+  const name = input.value.trim();
+  if (!name) return;
+  input.value = '';
+  const container = document.getElementById('custom-procs');
+  const chip = document.createElement('span');
+  chip.className = 'custom-chip';
+  chip.dataset.name = name;
+  chip.style.cssText = 'display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:var(--green-muted);color:var(--green-bright);border:1px solid var(--green-dim);font-size:11px;font-family:DM Sans,sans-serif';
+  chip.innerHTML = name + ' <span onclick="this.parentElement.remove()" style="cursor:pointer;font-size:13px;line-height:1;opacity:0.7">×</span>';
+  container.appendChild(chip);
+}
 
 // ── HSA CALCULATOR ──
 function calcHSA() {
