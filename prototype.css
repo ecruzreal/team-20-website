@@ -44,7 +44,7 @@
   .hello-text { font-size:12px; color:var(--text-muted); }
   .hello-name { font-size:18px; font-weight:700; color:var(--text-primary); }
   .menu-btn { width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:var(--bg-card); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; color:var(--text-muted); }
-  .cost-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:28px 25px; height: 20rem; text-align:center; margin-bottom:8px; position:relative; overflow:hidden; }
+  .cost-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:28px 25px; height: 20rem; text-align:center; margin-bottom:8px; position:relative; overflow:visible; }
   .cost-card::before { content:''; position:absolute; top:-40px; left:50%; transform:translateX(-50%); width:200px; height:200px; background:radial-gradient(circle,rgba(78,255,122,0.08) 0%,transparent 70%); }
   .cost-label { font-size:12px; color:var(--text-muted); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:4px; }
   .cost-title { font-size:14px; color:var(--text-primary); margin-bottom:8px; }
